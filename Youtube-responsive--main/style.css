@@ -228,9 +228,13 @@ p {
    justify-self: center;
    align-items: center;
    flex-direction: column;
+   
 }
 .box:hover{
-    background-color: rgb(220, 212, 212);
+    background-color: rgb(244, 228, 228);
+    width: 100%;
+    
+    
 }
 
 .user{
