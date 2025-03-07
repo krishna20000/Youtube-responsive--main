@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="https://i.postimg.cc/tRhRnpV9/youtube-social-icon-red.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <title>YouTube</title>
 </head>
 <body>
@@ -24,7 +25,8 @@
         </div>
 
         <div class="right">
-            <img class="upload" src="upload.svg" alt="">
+            <button id="dark-mode-toggle"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z"/></svg></button>
+            <img class="upload " src="upload.svg" alt="">
             <img class="app" src="youtube-apps.svg" alt="">
             <div class="note">
             <img class="notifications" src="notifications.svg" alt="">
@@ -38,6 +40,13 @@
         <div class="box">
             <img src="home.svg" alt="">
             <div>Home</div>
+        </div>
+        <div class="box">
+            <div class="box" id="trending-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z"/></svg>
+            <div>Trending</div>
+        </div>
+            
         </div>
         <div class="box">
             <img src="explore.svg" alt="">
@@ -58,7 +67,7 @@
         <div class="box"></div>
     </div>
 
-    <div class="grid">
+    <div class="grid" id="video-container">
         
     </div>
     <script src="script.js"></script>
