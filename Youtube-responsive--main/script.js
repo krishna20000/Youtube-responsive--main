@@ -1,19 +1,80 @@
+import { API_KEY } from "./config.js"; 
+
 document.addEventListener("DOMContentLoaded", function () {
   // Hamburger menu functionality
   const hamburger = document.getElementById("hamburger");
   const sidebar = document.getElementById("sidebar");
   const LoaderEl = document.getElementById("loader");
+  const homeEl = document.getElementById("home");
+  const trendingEl = document.getElementById("trending");
+  const exploreEl = document.getElementById("explore");
+  const subscriptionsEl = document.getElementById("subscriptions");
+  const originalsEl = document.getElementById("originals");
+  const musicEl = document.getElementById("music");
+  const libraryEl = document.getElementById("library");
+  const gridEl = document.getElementById("video-container");
+  const categoryEl = document.getElementById("category");
+  const userProfile = document.getElementById("user-profile");
+  const loginForm = document.getElementById("login-form");
+  const logoutBtn = document.getElementById("logout-btn");
+  const loginBtn = document.getElementById("login-btn");
+
 
   hamburger.addEventListener("click", function () {
+    sidebar.classList.toggle("expanded");
+    gridEl.classList.toggle("minimize");
+    categoryEl.classList.toggle("minimize");
+    
+});
+
+homeEl.addEventListener("click", function () {
+  sidebar.classList.toggle("expanded");
+  gridEl.classList.toggle("minimize");
+  categoryEl.classList.toggle("minimize");
+});
+
+trendingEl.addEventListener("click", function () {
+  sidebar.classList.toggle("expanded");
+  gridEl.classList.toggle("minimize");
+  categoryEl.classList.toggle("minimize");
+});
+
+exploreEl.addEventListener("click", function () {
+  sidebar.classList.toggle("expanded");
+  gridEl.classList.toggle("minimize");
+  categoryEl.classList.toggle("minimize");
+});
+
+subscriptionsEl.addEventListener("click", function () {
+  sidebar.classList.toggle("expanded");
+  gridEl.classList.toggle("minimize");
+  categoryEl.classList.toggle("minimize");
+});
+
+originalsEl.addEventListener("click", function () {
+  sidebar.classList.toggle("expanded");
+  gridEl.classList.toggle("minimize");
+  categoryEl.classList.toggle("minimize");
+});
+
+musicEl.addEventListener("click", function () {
+  sidebar.classList.toggle("expanded");
+  gridEl.classList.toggle("minimize");
+  categoryEl.classList.toggle("minimize");
+});
+
+
+
+  libraryEl.addEventListener("click", function () {
       sidebar.classList.toggle("expanded");
+      gridEl.classList.toggle("minimize");
+      categoryEl.classList.toggle("minimize");
   });
 
+
+
   // YouTube API Configuration
-  const API_KEY = "AIzaSyBkd9Owkin5HL7E-7wgYqDwIDxqUiphSwg"; // AIzaSyB-vmmilVnxy4i1MJcV8Le6QHTjP745M40; 
-  // AIzaSyCSOV1YjOXcLnTsePh0O8Fwdxlr-LNqr2g; 
-  // AIzaSyDZKjoivIpKyYdomY7CBIHWw7bQrtJ1qJg; 
-  // Replace with your API Key
-  const API_KEY = "YOUR_API_KEY"; // Replace with your API Key
+  
   const videoContainer = document.getElementById("video-container");
   const searchInput = document.querySelector(".search");
   const searchButton = document.querySelector(".search-but");
@@ -79,6 +140,8 @@ document.addEventListener("DOMContentLoaded", function () {
                   <img src="${video.snippet.thumbnails.medium.url}" alt="${video.snippet.title}">
               </a>
               <h3>${video.snippet.title}</h3>
+              <p class="channel-name">${video.snippet.channelTitle}</p>
+            <p class="video-description">${video.snippet.description.substring(0, 100)}...</p>
           `;
           videoContainer.appendChild(videoElement);
       });
@@ -100,6 +163,17 @@ document.addEventListener("DOMContentLoaded", function () {
           }
       }
   });
+
+  document.querySelectorAll(".category").forEach(button => {
+    button.addEventListener("click", function () {
+        document.querySelector(".category.active").classList.remove("active");
+        this.classList.add("active");
+        
+        let query = this.getAttribute("data-query");
+        fetchVideos(query); 
+    });
+});
+
 
   // Load Default Videos
   fetchVideos();

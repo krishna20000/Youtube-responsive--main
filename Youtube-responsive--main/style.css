@@ -12,7 +12,7 @@ body {
 /* Grid Layout for Videos */
 .grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr; /* 3 columns */
+    grid-template-columns: 1fr 1fr 1fr; /* 3 columns */
     gap: 15px; /* Space between videos */
 
 }
@@ -30,19 +30,26 @@ body {
 
 .video-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 16px;
 }
 
 .video-card {
     padding: 10px;
     border-radius: 8px;
-    transition: transform 0.2s ease-in-out;
+    
+    
 }
 
 .video-card img {
     width: 100%;
     border-radius: 8px;
+}
+
+.video-card h3 {
+    margin-top: 15px;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .video-card:hover {
@@ -124,6 +131,8 @@ p {
     align-items: center;
     flex: shrink 0;;
     justify-content: space-between;
+    gap: 15px;
+    margin-right: 45px;
    
 }
 .hamburger-menu{
@@ -262,8 +271,9 @@ p {
     text-align: center; /* Centers the number inside the badge */
 }
 
-.box{
 
+.box{
+    border: none;
    height: 76px;
    margin-bottom: 1px; 
    cursor: pointer;
@@ -271,10 +281,12 @@ p {
    justify-self: center;
    align-items: center;
    flex-direction: column;
+   padding-top: 10px;
    
 }
 .box:hover{
-    background-color: rgb(244, 228, 228);
+    
+    background-color: lightgrey;
     width: 100%;
     
     
@@ -282,26 +294,81 @@ p {
 
 .user{
     height: 35px;
+    width: 35px;
     border-radius: 100%;
+    cursor: pointer;
 
 
 }
 
+.categories-container {
+    overflow-x: auto; /* Enable horizontal scrolling */
+    white-space: nowrap;
+    padding: 10px 0;
+    background-color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    margin-left: 9px;
+    
+}
+
+.categories {
+    display: flex;
+    gap: 10px;
+    
+}
+
+.category {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 10px;
+    background-color: #e0e0e0;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.category.active {
+    background-color: black;
+    color: white;
+}
+
+.hidden
+{
+    display: none;
+}
+
+.minimize{
+    margin-left: 160px;
+}
+
 .sidebar{
+ 
   position: fixed;
   left: 0;
   bottom: 0;
-  background-color: white;
-  width: 72px;
-  top: 69px;
+  background-color: rgb(247, 246, 246);
+  width: 74px;
+  top: 55px;
+  padding-top: 15px;
   z-index: 200;
   transition: width 0.3s ease-in-out;
-    overflow: hidden;
+  overflow: hidden;
 
 }
 
 .sidebar.expanded {
-    width: 240px; /* Expanded width */
+    position: fixed;
+  left: 0;
+  bottom: 0;
+  background-color: rgb(247, 246, 246);
+  width: 240px;
+  top: 55px;
+  padding-top: 15px;
+  z-index: 200;
+  transition: width 0.3s ease-in-out;
+    overflow: hidden;
 }
 
 
