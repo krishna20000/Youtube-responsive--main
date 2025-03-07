@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // YouTube API Configuration
-  const API_KEY = "AIzaSyAygM1t-wOYJwgb0Qj20139WEECIN0Ku1s"; // Replace with your API Key
+  const API_KEY = "YOUR_API_KEY"; // Replace with your API Key
   const videoContainer = document.getElementById("video-container");
   const searchInput = document.querySelector(".search"); // Search input field
   const searchButton = document.querySelector(".search-but"); // Search button
