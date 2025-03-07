@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // AIzaSyCSOV1YjOXcLnTsePh0O8Fwdxlr-LNqr2g; 
   // AIzaSyDZKjoivIpKyYdomY7CBIHWw7bQrtJ1qJg; 
   // Replace with your API Key
+  const API_KEY = "YOUR_API_KEY"; // Replace with your API Key
   const videoContainer = document.getElementById("video-container");
   const searchInput = document.querySelector(".search");
   const searchButton = document.querySelector(".search-but");
