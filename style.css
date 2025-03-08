@@ -12,7 +12,7 @@ body {
 /* Grid Layout for Videos */
 .grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr; /* 3 columns */
+    grid-template-columns: 1fr 1fr 1fr 1fr; /* 3 columns */
     gap: 15px; /* Space between videos */
 
 }
