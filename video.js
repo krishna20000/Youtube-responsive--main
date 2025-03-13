@@ -7,50 +7,56 @@ const videoId = urlParams.get("videoId");
 // Display Video in the iframe
 if (videoId) {
     document.getElementById("videoPlayer").src = `https://www.youtube.com/embed/${videoId}`;
-    fetchVideoDetails(videoId);
 } else {
     document.getElementById("video-container").innerHTML = "<p>Video not found</p>";
 }
 
 // Fetch Video Details from YouTube API
 async function fetchVideoDetails(videoId) {
-  let apiKey = API_KEY; // Replace with your actual YouTube API key
-  let apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${videoId}&key=${apiKey}`;
+    let apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${videoId}&key=${API_KEY}`;
 
-  try {
-      let response = await fetch(apiUrl);
-      let data = await response.json();
-      let video = data.items[0];
+    try {
+        let response = await fetch(apiUrl);
+        let data = await response.json();
+        let video = data.items[0];
 
-      document.getElementById("videoTitle").textContent = video.snippet.title;
-      document.getElementById("channelName").textContent = `Channel: ${video.snippet.channelTitle}`;
-      document.getElementById("videoViews").textContent = `👁️ ${video.statistics.viewCount} views`;
-      document.getElementById("videoLikes").textContent = `👍 ${video.statistics.likeCount} likes`;
+        if (!video) {
+            console.error("Video not found");
+            return;
+        }
 
-      let description = video.snippet.description;
-      let videoDescriptionElement = document.getElementById("videoDescription");
-      let readMoreBtn = document.getElementById("readMoreBtn");
+        document.getElementById("videoTitle").textContent = video.snippet.title;
+        document.getElementById("channelName").textContent = `Channel: ${video.snippet.channelTitle}`;
+        document.getElementById("videoViews").textContent = `👁️ ${video.statistics.viewCount} views`;
+        document.getElementById("videoLikes").textContent = `👍 ${video.statistics.likeCount} likes`;
 
-      if (description.length > 150) {
-          videoDescriptionElement.textContent = description.substring(0, 150) + "...";
-          readMoreBtn.style.display = "inline-block";
+        let description = video.snippet.description;
+        let videoDescriptionElement = document.getElementById("videoDescription");
+        let readMoreBtn = document.getElementById("readMoreBtn");
 
-          readMoreBtn.onclick = function () {
-              videoDescriptionElement.textContent = description;
-              readMoreBtn.style.display = "none"; // Hide button after clicking
-          };
-      } else {
-          videoDescriptionElement.textContent = description;
-      }
-  } catch (error) {
-      console.error("Error fetching video details:", error);
-  }
+        if (description.length > 150) {
+            videoDescriptionElement.textContent = description.substring(0, 150) + "...";
+            readMoreBtn.style.display = "inline-block";
+
+            readMoreBtn.onclick = function () {
+                videoDescriptionElement.textContent = description;
+                readMoreBtn.style.display = "none"; // Hide button after clicking
+            };
+        } else {
+            videoDescriptionElement.textContent = description;
+        }
+    } catch (error) {
+        console.error("Error fetching video details:", error);
+    }
 }
-
 
 // Load Video & Details on Page Load
 window.onload = function () {
-    if (videoId) fetchVideoDetails(videoId);
+    if (videoId) {
+        fetchVideoDetails(videoId);
+        fetchRecommendedVideos();
+        loadComments();
+    }
 };
 
 // Comment Section Code
@@ -59,7 +65,7 @@ let addCommentButton = document.getElementById("addCommentButton");
 
 // Fetch comments from localStorage
 function getCommentsFromLocalStorage() {
-    let storedComments = localStorage.getItem("comments");
+    let storedComments = localStorage.getItem(`comments-${videoId}`);
     return storedComments ? JSON.parse(storedComments) : [];
 }
 
@@ -67,7 +73,7 @@ let commentList = getCommentsFromLocalStorage();
 
 // Save comments to localStorage
 function saveCommentsToLocalStorage() {
-    localStorage.setItem("comments", JSON.stringify(commentList));
+    localStorage.setItem(`comments-${videoId}`, JSON.stringify(commentList));
 }
 
 // Add a new comment
@@ -85,9 +91,11 @@ function onAddComment() {
         uniqueId: Date.now()
     };
 
+    // Add to comment list without affecting video
     commentList.push(newComment);
-    createAndAppendComment(newComment);
     saveCommentsToLocalStorage();
+    createAndAppendComment(newComment);
+
     commentInput.value = "";
 }
 
@@ -130,26 +138,32 @@ function createAndAppendComment(comment) {
 }
 
 // Load existing comments on page load
-for (let comment of commentList) {
-    createAndAppendComment(comment);
+function loadComments() {
+    commentsContainer.innerHTML = "";
+    for (let comment of commentList) {
+        createAndAppendComment(comment);
+    }
 }
 
-// Event listener for adding comments
-addCommentButton.onclick = function () {
+// Prevent page reload when clicking add comment button
+document.getElementById("addCommentButton").addEventListener("click", function (event) {
+    event.preventDefault(); // ✅ Stops page reload
     onAddComment();
-};
+});
 
-//sidebar
+// Fetch recommended videos
 async function fetchRecommendedVideos() {
-    let apiKey = "YOUR_YOUTUBE_API_KEY"; // Replace with your actual API key
-    let apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&type=video&relatedToVideoId=${videoId}&key=${apiKey}`;
+    let apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&type=video&relatedToVideoId=${videoId}&key=${API_KEY}`;
 
     try {
         let response = await fetch(apiUrl);
         let data = await response.json();
         let recommendedVideos = document.getElementById("recommendedVideos");
-        
+        recommendedVideos.innerHTML = ""; // ✅ Clear previous recommendations
+
         data.items.forEach(video => {
+            if (!video.id.videoId) return; // ✅ Ensure it has a valid video ID
+
             let videoItem = document.createElement("li");
             videoItem.classList.add("recommended-video");
 
@@ -171,10 +185,3 @@ async function fetchRecommendedVideos() {
         console.error("Error fetching recommended videos:", error);
     }
 }
-
-// Load recommended videos when the page loads
-window.onload = function () {
-    loadVideo();
-    fetchRecommendedVideos();
-};
-
