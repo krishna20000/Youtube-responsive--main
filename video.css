@@ -361,14 +361,14 @@ iframe {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 80%;
+  width: 65%;
   padding: 10px;
   border-bottom: 1px solid #ddd;
   background: #ffffff;
   border-radius: 5px;
   margin-bottom: 10px;
   transition: 0.3s ease-in-out;
-  margin-left: 120px;
+  margin-left: 7px;
 }
 
 .comment-item:hover {
@@ -396,7 +396,7 @@ iframe {
 
 /* Video Details Container */
 #videoDetails {
-  width: 100%;
+  width: 51%;
   max-width: 800px;
   margin-left: 130px;
   margin-bottom: 20px;
