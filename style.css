@@ -346,6 +346,10 @@ p {
     cursor: pointer;
     font-size: 14px;
     transition: background 0.3s;
+    -webkit-transition: background 0.3s;
+    -moz-transition: background 0.3s;
+    -ms-transition: background 0.3s;
+    -o-transition: background 0.3s;
 }
 
 .category.active {
