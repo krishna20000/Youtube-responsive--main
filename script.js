@@ -86,65 +86,130 @@ musicEl.addEventListener("click", function () {
       LoaderEl.style.display = "none";
   }
 
+  function isIndianChannel(channelTitle) {
+    const indianKeywords = ["India", "Bollywood", "Desi", "Hindi", "Tamil", "Telugu", "Bengali"];
+    return indianKeywords.some(keyword => channelTitle.toLowerCase().includes(keyword.toLowerCase()));
+}
+
+
+
   // Fetch & Display Most Popular Videos (Default)
   async function fetchVideos(query = "") {
-      showLoader();
-      videoContainer.innerHTML = "";
-      
-      let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=50&key=${API_KEY}`;
+    showLoader();
+    videoContainer.innerHTML = "";
+    
+    let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=50&key=${API_KEY}&regionCode=IN`;
 
-      if (query) {
-          url += `&q=${encodeURIComponent(query)}`;
-      } else {
-          url += `&chart=mostPopular&regionCode=IN`;
-      }
+    if (query) {
+        url += `&chart=mostPopular&regionCode=IN`;
+    } else {
+        url += `&chart=mostPopular&regionCode=IN`;
+    }
 
-      try {
-          const response = await fetch(url);
-          const data = await response.json();
 
-          console.log("API Response:", data); // Debugging line
 
-          if (data.error) {
-              console.error("YouTube API Error:", data.error.message);
-              videoContainer.innerHTML = `<p style="color: red;">Error: ${data.error.message}</p>`;
-              return;
-          }
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
 
-          if (data.items && data.items.length > 0) {
-              displayVideos(data.items);
-          } else {
-              console.error("No videos found:", data);
-              videoContainer.innerHTML = `<p>No videos found.</p>`;
-          }
+        console.log("API Response:", data); // Debugging
 
-      } catch (error) {
-          console.error("Error fetching videos:", error);
-          videoContainer.innerHTML = `<p style="color: red;">Failed to load videos.</p>`;
-      } finally {
-          hideLoader();
-      }
-  }
+        if (data.error) {
+            console.error("YouTube API Error:", data.error.message);
+            videoContainer.innerHTML = `<p style="color: red;">Error: ${data.error.message}</p>`;
+            return;
+        }
+
+        if (data.items && data.items.length > 0) {
+            const videoIds = data.items.map(video => video.id.videoId).join(",");
+            if (videoIds) {
+                fetchVideoDetails(videoIds, data.items);  // ✅ Fetch video durations
+            } else {
+                displayVideos(data.items, {}); // No duration available
+            }
+        } else {
+            console.error("No videos found:", data);
+            videoContainer.innerHTML = `<p>No videos found.</p>`;
+        }
+
+    } catch (error) {
+        console.error("Error fetching videos:", error);
+        videoContainer.innerHTML = `<p style="color: red;">Failed to load videos.</p>`;
+    } finally {
+        hideLoader();
+    }
+}
+
+
+  // Convert ISO 8601 duration to readable formatasync function fetchVideoDetails(videoIds, videos) {
+    async function fetchVideoDetails(videoIds, videos) {
+        let url = `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoIds}&key=${API_KEY}&regionCode=IN`;
+    
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+    
+            if (data.items && data.items.length > 0) {
+                const durations = {};
+                data.items.forEach(video => {
+                    durations[video.id] = convertDuration(video.contentDetails.duration);
+                });
+    
+                displayVideos(videos, durations);
+            }
+        } catch (error) {
+            console.error("Error fetching video details:", error);
+        }
+    }
+    
+
+    function convertDuration(isoDuration) {
+        if (!isoDuration) return "00:00"; // Handle null or undefined input
+    
+        const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
+        const matches = isoDuration.match(regex);
+    
+        if (!matches) return "Live"; // Handle invalid duration format
+
+        
+    
+        const hours = matches[1] ? parseInt(matches[1]) : 0;
+        const minutes = matches[2] ? parseInt(matches[2]) : 0;
+        const seconds = matches[3] ? parseInt(matches[3]) : 0;
+    
+        return `${hours > 0 ? (hours < 10 ? "0" + hours + ":" : hours + ":") : ""}${minutes < 10 ? "0" + minutes : minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
+    }
+    
+  
+
+
 
   // Display Videos in Grid
-  function displayVideos(videos) {
-      videoContainer.innerHTML = ""; // Clear previous results
-      videos.forEach(video => {
-          if (!video.id.videoId) return; // Ensure videoId exists
+  function displayVideos(videos, durations) {
+    videoContainer.innerHTML = "";
+    videos.forEach(video => {
+        if (!video.id.videoId) return;
 
-          const videoElement = document.createElement("div");
-          videoElement.classList.add("video-card");
-          videoElement.innerHTML = `
-              <a href="https://www.youtube.com/watch?v=${video.id.videoId}" target="_blank">
-                  <img src="${video.snippet.thumbnails.medium.url}" alt="${video.snippet.title}">
-              </a>
-              <h3>${video.snippet.title}</h3>
-              <p class="channel-name">${video.snippet.channelTitle}</p>
-            <p class="video-description">${video.snippet.description.substring(0, 100)}...</p>
-          `;
-          videoContainer.appendChild(videoElement);
-      });
-  }
+        const duration = durations[video.id.videoId] || "N/A"; // Get duration from fetched data
+
+        const videoElement = document.createElement("div");
+        videoElement.classList.add("video-card");
+        videoElement.innerHTML = `
+            <a href="video.html?videoId=${video.id.videoId}">
+                <img src="${video.snippet.thumbnails.medium.url}" alt="${video.snippet.title}">
+            </a>
+            <div class="videotimex">
+                <div class="videotime">${duration}</div>
+            </div>
+            <h3>${video.snippet.title}</h3>
+            <p class="channel-name">${video.snippet.channelTitle}</p>
+        `;
+        videoContainer.appendChild(videoElement);
+    });
+}
+
+  
+
 
   // Event Listeners for Search
   searchButton.addEventListener("click", () => {
@@ -172,7 +237,6 @@ musicEl.addEventListener("click", function () {
         fetchVideos(query); 
     });
 });
-
 
   // Load Default Videos
   fetchVideos();

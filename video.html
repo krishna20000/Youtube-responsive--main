@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="video.css">
+    <title>Video Player</title>
+    <script src="https://kit.fontawesome.com/220cd605c3.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="header">
+    <div class="left">
+        
+        <img class="hamburger-menu" id="hamburger" src="hamburger-menu.svg" alt="">
+
+        <img  class="youtube-logo" src="youtube-logo.svg" alt="">
+    </div>
+    <div class="mid"><input class="search" type="text" placeholder="Search">
+            <button class="search-but"><img class="serachicon" src="search.svg" alt="">
+            <div class="tooltips">Search</div></button>
+            <button class="voice-search"><img class="icon" src="voice-search-icon.svg" alt="">
+    </div>
+
+    <div class="right">
+        <button id="theme-toggle" class="p-2 border-0 bg-transparent
+
+bg-gray-200 dark:bg-gray-800"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z"/></svg></button>
+        <img class="upload " src="upload.svg" alt="">
+        <img class="app" src="youtube-apps.svg" alt="">
+        <div class="note">
+        <img class="notifications" src="notifications.svg" alt="">
+        <div class="count">5</div>
+    </div>
+        <img class="user" src="https://i.postimg.cc/2Sk1pPwG/circle-transparent.png" alt="">
+    </div>
+
+    <div id="login-form" class="hidden">
+        <input type="text" id="username" placeholder="Enter Username">
+        <input type="password" id="password" placeholder="Enter Password">
+        <button id="login-btn">Login</button>
+    </div>
+    
+    <!-- Logout Button (Initially Hidden) -->
+    <button id="logout-btn" class="hidden">Logout</button>
+</div>
+    <div id="video-container">
+      <iframe id="videoPlayer" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <div id="videoDetails">
+      <h2 id="videoTitle"></h2>
+      <p id="channelName"></p>
+      <p id="videoViews"></p>
+      <p id="videoLikes"></p>
+      <p id="videoDescription"></p>
+  </div>
+
+    <div id="comments-container">
+      <h2>Comments</h2>
+      <form id="comment-form" class="comment-form">
+        <img class="user" src="https://i.postimg.cc/2Sk1pPwG/circle-transparent.png" alt="">
+        <input type="text" id="commentInput" placeholder="Enter your comment">
+        <button id="addCommentButton">Add Comment</button>
+        </form>
+      <ul id="commentList"></ul>
+
+      <!-- Recommended Videos Sidebar -->
+      <div class="sidebar">
+        <h3>Recommended Videos</h3>
+        <ul id="recommendedVideos"></ul>
+    </div>
+      
+      
+    </div>
+
+    <script>
+        
+    </script>
+    <script type="module" src="video.js"></script>
+</body>
+</html>
