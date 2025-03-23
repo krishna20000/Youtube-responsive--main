@@ -491,4 +491,45 @@ iframe {
   border-radius: 5px;
 }
 
+.left-sidebar{
+ 
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background-color: transparent;
+  width: 74px;
+  top: 55px;
+  padding-top: 15px;
+  z-index: 200;
+  transition: width 0.02s ease-in-out;
+  overflow: hidden;
 
+}
+
+.left-sidebar.expanded {
+    position: fixed;
+  left: 0;
+  bottom: 0;
+  background-color: transparent;
+  width: 240px;
+  top: 55px;
+  padding-top: 15px;
+  z-index: 200;
+  transition: width 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+
+.box img{
+    height: 30px;
+    align-items: center;
+    
+    
+}
+.box div{
+    font-family: Roboto;
+    font-size: 10px;
+    margin-top: 5px;
+    
+
+}

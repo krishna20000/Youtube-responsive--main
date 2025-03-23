@@ -43,8 +43,40 @@ bg-gray-200 dark:bg-gray-800"><svg xmlns="http://www.w3.org/2000/svg" height="24
     <!-- Logout Button (Initially Hidden) -->
     <button id="logout-btn" class="hidden">Logout</button>
 </div>
+<div class="left-sidebar" id="left-sidebar">
+        
+  <button id="home" class="box">
+      <img src="home.svg" alt="">
+      <div class="expanded" id="expand">Home</div>
+  </button>
+
+  <button class="box">
+      <div class="box" id="trending">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z"/></svg>
+      <div>Trending</div>
+  </div>
+      
+  </button>
+  <button class="box" id="explore">
+      <img src="explore.svg" alt="">
+      <div>Explore</div>
+  </button>
+  <button class="box" id="subscriptions">
+
+       <img src="subscriptions.svg" alt="">
+       <div>Subscriptions</div>
+  </button>
+  <button class="box" id="originals"> <img src="originals.svg" alt="">
+  <div>Originals</div></button>
+  <button class="box" data-query="Music" id="music"><img src="youtube-music.svg" alt="">
+      <div>YouTube Music</div></button>
+  <div class="box" id="library"><img src="library.svg" alt="">
+      <div>
+          Library</div></div>
+  <div class="box"></div>
+</div>
 <div class="sidebar">
-  <h3>Recommended Videos</h3>
+  
   <ul id="recommendedVideos"></ul>
 </div>
     <div id="video-container">

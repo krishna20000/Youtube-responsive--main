@@ -1,4 +1,68 @@
 import { API_KEY } from "./config.js";
+const hamburger = document.getElementById("hamburger");
+  const sidebar = document.getElementById("sidebar");
+  const LoaderEl = document.getElementById("loader");
+  const homeEl = document.getElementById("home");
+  const trendingEl = document.getElementById("trending");
+  const exploreEl = document.getElementById("explore");
+  const subscriptionsEl = document.getElementById("subscriptions");
+  const originalsEl = document.getElementById("originals");
+  const musicEl = document.getElementById("music");
+  const libraryEl = document.getElementById("library");
+  const gridEl = document.getElementById("video-container");
+  const categoryEl = document.getElementById("category");
+
+  hamburger.addEventListener("click", function () {
+    sidebar.classList.toggle("expanded");
+    gridEl.classList.toggle("minimize");
+    categoryEl.classList.toggle("minimize");
+    
+});
+
+homeEl.addEventListener("click", function () {
+  sidebar.classList.toggle("expanded");
+  gridEl.classList.toggle("minimize");
+  categoryEl.classList.toggle("minimize");
+});
+
+trendingEl.addEventListener("click", function () {
+  sidebar.classList.toggle("expanded");
+  gridEl.classList.toggle("minimize");
+  categoryEl.classList.toggle("minimize");
+});
+
+exploreEl.addEventListener("click", function () {
+  sidebar.classList.toggle("expanded");
+  gridEl.classList.toggle("minimize");
+  categoryEl.classList.toggle("minimize");
+});
+
+subscriptionsEl.addEventListener("click", function () {
+  sidebar.classList.toggle("expanded");
+  gridEl.classList.toggle("minimize");
+  categoryEl.classList.toggle("minimize");
+});
+
+originalsEl.addEventListener("click", function () {
+  sidebar.classList.toggle("expanded");
+  gridEl.classList.toggle("minimize");
+  categoryEl.classList.toggle("minimize");
+});
+
+musicEl.addEventListener("click", function () {
+  sidebar.classList.toggle("expanded");
+  gridEl.classList.toggle("minimize");
+  categoryEl.classList.toggle("minimize");
+});
+
+
+
+  libraryEl.addEventListener("click", function () {
+      sidebar.classList.toggle("expanded");
+      gridEl.classList.toggle("minimize");
+      categoryEl.classList.toggle("minimize");
+  });
+
 
 // Extract videoId from the URL
 const urlParams = new URLSearchParams(window.location.search);
@@ -153,16 +217,26 @@ document.getElementById("addCommentButton").addEventListener("click", function (
 
 // Fetch recommended videos
 async function fetchRecommendedVideos() {
+    let recommendedVideosEl = document.getElementById("recommendedVideos");
+    recommendedVideosEl.innerHTML = "<li>Loading...</li>";
+
     let apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&type=video&relatedToVideoId=${videoId}&key=${API_KEY}`;
 
     try {
         let response = await fetch(apiUrl);
         let data = await response.json();
-        let recommendedVideos = document.getElementById("recommendedVideos");
-        recommendedVideos.innerHTML = ""; // ✅ Clear previous recommendations
+        
+        console.log("API Response:", data); // ✅ Debugging
+        
+        recommendedVideosEl.innerHTML = "";
+
+        if (!data.items || data.items.length === 0) {
+            recommendedVideosEl.innerHTML = "<li>No recommendations found.</li>";
+            return;
+        }
 
         data.items.forEach(video => {
-            if (!video.id.videoId) return; // ✅ Ensure it has a valid video ID
+            if (!video.id.videoId) return;
 
             let videoItem = document.createElement("li");
             videoItem.classList.add("recommended-video");
@@ -175,13 +249,18 @@ async function fetchRecommendedVideos() {
                 </div>
             `;
 
-            videoItem.onclick = function () {
-                window.location.href = `video.html?videoId=${video.id.videoId}`;
-            };
+            videoItem.addEventListener("click", () => {
+                window.history.pushState({}, "", `video.html?videoId=${video.id.videoId}`);
+                document.getElementById("videoPlayer").src = `https://www.youtube.com/embed/${video.id.videoId}`;
+                fetchVideoDetails(video.id.videoId);
+                fetchRecommendedVideos();
+                loadComments();
+            });
 
-            recommendedVideos.appendChild(videoItem);
+            recommendedVideosEl.appendChild(videoItem);
         });
     } catch (error) {
         console.error("Error fetching recommended videos:", error);
+        recommendedVideosEl.innerHTML = "<li>Error loading recommendations.</li>";
     }
 }

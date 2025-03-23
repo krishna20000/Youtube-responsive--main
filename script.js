@@ -1,5 +1,5 @@
-import { API_KEY } from "./config.js";
 
+import { API_KEY } from "./config.js";
 document.addEventListener("DOMContentLoaded", function () {
   // Hamburger menu functionality
   const hamburger = document.getElementById("hamburger");
